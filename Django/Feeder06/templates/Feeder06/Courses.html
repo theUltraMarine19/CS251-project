@@ -1,0 +1,10 @@
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+    {% for c in course_list %}
+        {% if c.course_code == course_id %}
+            <h1>{{ course_id }}-{{ c.course_name }}</h1>
+            <a href="#"> Midsem Course Feedback </a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

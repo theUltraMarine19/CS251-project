@@ -1,0 +1,14 @@
+{% extends 'Feeder06/base.html' %}
+{% block body %}
+        <br>
+		<h1>Welcome Admin !</h1>
+        <br>
+            <ul>
+        {% for c in  course_list %}
+        <li><a href="/Feeder06/admin/{{ c.course_code }}">{{ c.course_code }}-{{ c.course_name }}</a></li>
+        {% endfor %}
+    </ul>
+    <br>
+        <a href="/Feeder06/cregister"> Register Course </a><br>
+        <a href="/Feeder06/logout"> Logout </a>
+{% endblock %}

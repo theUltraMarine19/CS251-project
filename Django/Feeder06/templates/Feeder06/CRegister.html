@@ -1,0 +1,23 @@
+
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+		<h1>Register the Course</h1>
+
+		{% if registered %}
+		<strong>Thank you for registering the course!</strong>
+		<a href="/Feeder06/adminlogin">Return to the homepage.</a><br />
+		{% else %}
+
+		<form id="course_form" method="post" action="/Feeder06/cregister/"
+				enctype="multipart/form-data">
+
+			{% csrf_token %}
+
+			{{  course_form.as_p }}
+
+			<input type="submit" name="submit" value="Register" />
+		</form>
+
+		{% endif %}
+{% endblock %}

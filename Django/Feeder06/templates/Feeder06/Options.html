@@ -1,0 +1,22 @@
+
+
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+
+<div class="container">
+  <h2>Welcome to Feeder</h2>
+  <p>Choose one of the following:</p>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Select
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="admin">Django Admin</a></li>
+      <li><a href="adminlogin">Special Admin</a></li>
+      <li><a href="login">Instructor</a></li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}
+

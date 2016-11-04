@@ -1,0 +1,19 @@
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+    <ul>
+        {% for c in  course_list %}
+        <li><a href="{{ c.course_code }}/">{{ c.course_code }}-{{ c.course_name }}</a></li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href = "feedback/"> Add Feedback</a>
+    <br>
+    <a href = "#"> Add Deadlines</a>
+    <br>
+    <a href = "#"> View Feedback</a>
+    <br>
+    <a href = "deadline/"> View Deadlines</a>
+    <br>
+    <a href="logout/"> Logout </a>
+{% endblock %}

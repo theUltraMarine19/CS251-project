@@ -1,0 +1,32 @@
+
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+	<div id="wrapper">
+		<div class="header">
+            <br>
+		<h1>Instructor Login Page</h1>
+            <br>
+		</div >
+
+		<form id="login_form" method="post" action="/Feeder06/login/">
+			<div class="content">
+			{% csrf_token %}
+			Username: <input type="text" name="username" value="" size="50" />
+			<div class="user-icon"></div>
+			<br />
+			Password: <input type="password" name="password" value="" size="50" />
+			<div class="pass-icon"></div>
+			<br />
+			</div>
+			<div class="footer">
+			<input type="submit" value="submit" class="button"/>
+			<br><br>
+			First time here?
+			<a href="/Feeder06/register" class="register"> Register</a>
+			</div>
+		</form>
+	</div>
+	<div class="gradient"></div>
+
+{% endblock %}

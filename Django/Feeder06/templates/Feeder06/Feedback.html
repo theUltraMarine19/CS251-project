@@ -1,0 +1,38 @@
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+		<h1>Feedback Form</h1>
+
+		{% if feeddone %}
+		<strong>Click to add a question</strong>
+
+            {% for q in  question_list %}
+        <!--li>{ q.quest}}</li-->
+        {% endfor %}
+
+
+            <form id="question_form" method="post" action="/Feeder06/feedback/"
+				enctype="multipart/form-data">
+
+			{% csrf_token %}
+
+			{{  question_form.as_p }}
+
+			<input type="submit" name="submit2" value="Add Question" />
+		</form>
+
+		<a href="/Feeder06/">Submit and Return to the homepage.</a> <br>
+		{% else %}
+
+		<form id="feedback_form" method="post" action="/Feeder06/feedback/"
+				enctype="multipart/form-data">
+
+			{% csrf_token %}
+
+			{{  feedback_form.as_p }}
+
+			<input type="submit" name="submit1" value="Click to Start Adding Questions" />
+		</form>
+
+		{% endif %}
+{% endblock %}

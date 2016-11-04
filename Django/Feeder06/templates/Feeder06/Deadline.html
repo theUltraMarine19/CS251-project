@@ -1,0 +1,20 @@
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+    {% for d in deadline_list %}
+        {% if d.running %}
+            <h1>{{ d.name }}-{{ d.deadline }}</h1>
+        {% endif %}
+
+    {% endfor %}
+    <br>
+    <h2> Finished Deadlines </h2>
+    {% for d in deadline_list %}
+        {% if d.running == False %}
+            <h1>{{ d.name }}-{{ d.deadline }}</h1>
+        {% endif %}
+
+    {% endfor %}
+
+
+{% endblock %}
