@@ -34,7 +34,7 @@ class Deadline(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=512)
     deadline = models.DateField(max_length=50)
-    running = models.BooleanField()
+    running = models.BooleanField(default = True)
 
     def __str__(self):
         return self.course.course_code + '-' + self.name

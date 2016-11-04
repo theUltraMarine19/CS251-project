@@ -68,6 +68,32 @@ def index(request):
     else:
         return render (request, 'Feeder06/Options.html',{})
 
+
+@login_required
+def adeadline(request):
+    dregistered = False
+    if request.method == 'POST':
+        deadline_form = DeadlineForm(data=request.POST)
+        if deadline_form.is_valid():
+            deadline_list = Deadline.objects.all()
+            for d in deadline_list:
+                if d.name == deadline_form.data['name'] :
+                    return HttpResponse('Deadline already exists. You deserve lame page')
+
+            dregistered = True
+            dead=  deadline_form.save()
+
+            dead.save()
+
+
+    else:
+        deadline_form = DeadlineForm()
+
+    return render(request, 'Feeder06/AddDeadline.html', {'deadline_form': deadline_form, 'registered': dregistered})
+
+
+
+
 @login_required
 def deadline(request):
     deadline_list = Deadline.objects.all()

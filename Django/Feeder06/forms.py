@@ -45,6 +45,6 @@ class DeadlineForm(forms.ModelForm):
 
     class Meta:
         model = Deadline
-        fields = ('course', 'name', 'deadline', 'running')
+        fields = ('course', 'name', 'deadline')
 
 

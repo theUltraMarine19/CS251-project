@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^cregister/', views.cregister, name='cregister'),
 	url(r'^logout/', views.Ilogout, name='logout'),
     url(r'^slogin/', views.Studentlist, name='slogin'),
+    url(r'^adeadline/', views.adeadline, name ='adeadline')
 ]
 
 '''def get_admin_urls(urls):

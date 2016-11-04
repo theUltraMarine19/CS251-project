@@ -1,0 +1,21 @@
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+		<h1>Add deadline</h1>
+
+		{% if registered %}
+		<strong>Deadline added !</strong>
+		<a href="/Feeder06/">Return to the homepage.</a><br />
+		{% else %}
+
+		<form id="deadline_form" method="post" action="/Feeder06/adeadline/"
+				enctype="multipart/form-data">
+
+			{% csrf_token %}
+
+			{{  deadline_form.as_p }}
+
+			<input type="submit" name="submit" value="Register" />
+		</form>
+		{% endif %}
+{% endblock %}
