@@ -81,7 +81,7 @@ def adeadline(request):
                     return HttpResponse('Deadline already exists. You deserve lame page')
 
             dregistered = True
-            dead=  deadline_form.save()
+            dead =  deadline_form.save()
 
             dead.save()
 
@@ -100,6 +100,11 @@ def deadline(request):
     context ={
         'deadline_list' : deadline_list,
     }
+    for  d in deadline_list:
+        if d.deadline < date.today():
+            d.running = False
+        else:
+            d.running = True
     return render(request, 'Feeder06/Deadline.html', context)
 
 
