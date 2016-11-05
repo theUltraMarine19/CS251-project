@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
+
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,9 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -107,6 +112,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+
+   'social.backends.facebook.FacebookOAuth2',
+   'social.backends.google.GoogleOAuth2',
+   'social.backends.twitter.TwitterOAuth',
+   'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -129,3 +141,9 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/Feeder06/'
 LOGIN_URL='/Feeder06/'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1132824353459941'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'cc0bfb86ac473cd33b1d337a7e8237dd'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '308647766263-qv2va38c9namcpvh0k208gneof5g4ret.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '74nLp4p2BkbonbNqDyH4q2eu'

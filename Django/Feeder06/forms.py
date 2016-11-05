@@ -41,6 +41,7 @@ class QuestionForm(forms.ModelForm):
         model = Question
         fields = ('quest',)
 
+
 class DeadlineForm(forms.ModelForm):
 
     class Meta:

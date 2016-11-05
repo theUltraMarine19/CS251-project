@@ -68,31 +68,8 @@ def index(request):
     else:
         return render (request, 'Feeder06/Options.html',{})
 
-
-@login_required
-def adeadline(request):
-    dregistered = False
-    if request.method == 'POST':
-        deadline_form = DeadlineForm(data=request.POST)
-        if deadline_form.is_valid():
-            deadline_list = Deadline.objects.all()
-            for d in deadline_list:
-                if d.name == deadline_form.data['name'] :
-                    return HttpResponse('Deadline already exists. You deserve lame page')
-
-            dregistered = True
-            dead =  deadline_form.save()
-
-            dead.save()
-
-
-    else:
-        deadline_form = DeadlineForm()
-
-    return render(request, 'Feeder06/AddDeadline.html', {'deadline_form': deadline_form, 'registered': dregistered})
-
-
-
+def social(request) :
+    return render(request,'Feeder06/Home.html',{'request':request,'user':request.user})
 
 @login_required
 def deadline(request):
@@ -100,11 +77,6 @@ def deadline(request):
     context ={
         'deadline_list' : deadline_list,
     }
-    for  d in deadline_list:
-        if d.deadline < date.today():
-            d.running = False
-        else:
-            d.running = True
     return render(request, 'Feeder06/Deadline.html', context)
 
 
@@ -202,6 +174,31 @@ def register(request):
         user_form = UserForm()
 
     return render(request,'Feeder06/Register.html',{'user_form': user_form, 'registered': registered})
+
+@login_required
+def adeadline(request):
+    dregistered = False
+    if request.method == 'POST':
+        deadline_form = DeadlineForm(data=request.POST)
+        if deadline_form.is_valid():
+            deadline_list = Deadline.objects.all()
+            for d in deadline_list:
+                if d.name == deadline_form.data['name'] :
+                    return HttpResponse('Deadline already exists. You deserve lame page')
+
+            dregistered = True
+            dead=  deadline_form.save()
+
+            dead.save()
+
+
+    else:
+        deadline_form = DeadlineForm()
+
+    return render(request, 'Feeder06/AddDeadline.html', {'deadline_form': deadline_form, 'registered': dregistered})
+
+
+
 
 @login_required
 def afeedback(request):
@@ -405,8 +402,8 @@ def simport(request):
 
 
 
-
+@login_required
 def Ilogout(request):
     logout(request)
 
-    return HttpResponseRedirect('/Feeder06/')
+    return render(request, 'Feeder06/Logout.html', {})
