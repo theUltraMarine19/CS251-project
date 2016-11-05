@@ -15,12 +15,9 @@
        <a href="/Feeder06/"> Click here to view Courses</a>
        </li>
      <li>
-       <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+       <a href="logout/">Logout</a>
      </li>
    {% else %}
-     <li>
-       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
-     </li>
        <li>
        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
      </li>

@@ -26,3 +26,31 @@ ul.errorlist > li {
 .glyphicon-star.active {
     color: #FDB230;
 }
+
+.Absolute-Center.is-Responsive {
+  width: 50%;
+  height: 50%;
+  min-width: 200px;
+  max-width: 400px;
+  padding: 40px;
+}
+
+a:link {
+    text-decoration: none;
+    font-size: 20px;
+}
+
+a:visited {
+    text-decoration: none;
+    font-size: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+    font-size: 20px;
+}
+
+a:active {
+    text-decoration: underline;
+    font-size: 20px;
+}

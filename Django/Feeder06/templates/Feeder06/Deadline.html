@@ -1,6 +1,7 @@
 {% extends 'Feeder06/base.html' %}
 
 {% block body %}
+    <h2> Running Deadlines </h2>
     {% for d in deadline_list %}
         {% if d.running %}
             <h1>{{ d.name }}-{{ d.deadline }}</h1>

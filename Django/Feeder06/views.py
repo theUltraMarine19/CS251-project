@@ -7,10 +7,13 @@ from .forms import UserForm, CourseForm, ImportForm, FeedbackForm, DeadlineForm,
 from datetime import date
 import csv
 
-from rest_framework import status
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status, authentication, exceptions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .Serializers import StudentSerializer
+from .serializers import StudentSerializer,DeadlineSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions
 
@@ -18,42 +21,46 @@ from rest_framework import permissions
 
 # Create your views here.
 
+class CustAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        username = request.META.get('X_USERNAME')
+        if not username:
+            return None
 
-@api_view(['POST'])
-@permission_classes((permissions.AllowAny,))
+        try:
+            user = Student.objects.get( roll =username)
+        except Student.DoesNotExist:
+            raise exceptions.AuthenticationFailed('No such user')
+
+        return (user, None)
+
 class Studentlist(APIView):
-    class Meta:
-        queryset = Student.objects.all()
-        fields =['roll', 'password']
-        allowed_methods = ['get','post']
-        resource_name = 'Feeder06'
+    authentication_classes = (SessionAuthentication, CustAuthentication)
+    permission_classes = (IsAuthenticated,)
 
-    def login(self, request, **kwargs):
-        self.method_check(request, allowed=['post'])
-        data = self.deserialize(request, request.raw_post_data,
-                                format=request.META.get('CONTENT_TYPE', 'application/json'))
+    def get(self, request, format=None):
+        content = {
+            'user': unicode(request.user),
+            'auth': unicode(request.auth),
+        }
+        return Response(content)
 
-        username = data.get('username', '')
-        password = data.get('password', '')
 
-        user = authenticate(username=username, password=password)
 
-        if user:
-            if user.is_active:
-                login(request, user)
-                return self.create_response(request, {
-                    'success': True
-                })
-            else:
-                return self.create_response(request, {
-                    'success': False,
-                    'reason': 'disabled',
-                }, HttpForbidden)
-        else:
-            return self.create_response(request, {
-                'success': False,
-                'reason': 'incorrect',
-            }, HttpUnauthorized)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -77,6 +84,11 @@ def deadline(request):
     context ={
         'deadline_list' : deadline_list,
     }
+    for  d in deadline_list:
+        if d.deadline < date.today():
+            d.running = False
+        else:
+            d.running = True
     return render(request, 'Feeder06/Deadline.html', context)
 
 
@@ -110,7 +122,7 @@ def Alogin(request):
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
-
+        flag = 2
         if user:
             if user.is_active:
                 login(request, user)
@@ -120,11 +132,16 @@ def Alogin(request):
                         'course_list': course_list,
                     }
                     return render(request, 'Feeder06/Adminhome.html', context)
-                return HttpResponse('Invalid login details supplied.')
+                else:
+                    logout(request)
+                    flag = 3
+                    return render(request, 'Feeder06/Error.html', {'flag':flag})
             else:
-                return HttpResponse('Your account is disabled.')
+                flag = 4
+                return render(request, 'Feeder06/Error.html', {'flag':flag})
         else:
-            return HttpResponse('Invalid login details supplied.')
+            flag = 5
+            return render(request, 'Feeder06/Error.html', {'flag':flag})
     else:
         if request.user.is_authenticated():
             course_list = Course.objects.all()
@@ -148,10 +165,12 @@ def Ilogin(request):
                 login(request, user)
                 return HttpResponseRedirect('/Feeder06/')
             else:
-                return HttpResponse('Your account is disabled.')
+                flag = 4
+                return render(request, 'Feeder06/Error.html', {'flag':flag})
         else:
             print ('Invalid login details: {0}, {1}'.format(username, password))
-            return HttpResponse('Invalid login details supplied.')
+            flag = 5
+            return render(request, 'Feeder06/Error.html', {'flag': flag})
 
     else:
         return render(request, 'Feeder06/Instructorform.html', {})
@@ -183,11 +202,11 @@ def adeadline(request):
         if deadline_form.is_valid():
             deadline_list = Deadline.objects.all()
             for d in deadline_list:
-                if d.name == deadline_form.data['name'] :
-                    return HttpResponse('Deadline already exists. You deserve lame page')
-
+                if d.name == deadline_form.data['name']:
+                    flag = 1
+                    return render(request,'Feeder06/Error.html',{'flag': flag})
             dregistered = True
-            dead=  deadline_form.save()
+            dead =  deadline_form.save()
 
             dead.save()
 
@@ -196,7 +215,6 @@ def adeadline(request):
         deadline_form = DeadlineForm()
 
     return render(request, 'Feeder06/AddDeadline.html', {'deadline_form': deadline_form, 'registered': dregistered})
-
 
 
 
@@ -215,7 +233,8 @@ def afeedback(request):
                         flag=1
 
                 if flag == 0 :
-                    return render(request,'Course does not exist',{})
+                    p=6
+                    return render(request,'Feeder06/Error.html',{'flag' : p})
 
                 feed=Feedback(course = a, course_code=feedback_form.data['course_code'], name=feedback_form.data['name'], last_date=feedback_form.data['last_date'])
                 feed.save()
@@ -244,7 +263,6 @@ def afeedback(request):
     return render(request,'Feeder06/Feedback.html',{'feedback_form': feedback_form, 'feeddone': feeddone, 'question_form': QuestionForm()})
 
 
-
 @login_required
 def cregister(request):
 
@@ -259,7 +277,8 @@ def cregister(request):
 
             for c in course_list:
                 if c.course_code == course_form.data['course_code']:
-                    return HttpResponse('Course already exists. You deserve lame page')
+                    flag = 2
+                    return render(request,'Feeder06/Error.html',{'flag':flag})
 
             course = course_form.save()
             course.save()
@@ -374,20 +393,35 @@ def cregister(request):
 
     return render(request,'Feeder06/CRegister.html',{'course_form': course_form, 'registered': cregistered})
 
+
+
 @login_required
 def simport(request):
     if request.method == 'POST':
         course_list = Course.objects.all()
         course_code=request.POST['course_code']
         path_to_file=request.POST['path_to_file']
+        flag=0
         for c in course_list:
             if c.course_code==course_code:
                 a=c
-        with open(path_to_file) as f:
+                flag=1
+        if flag==0:
+            p=6
+            return render(request,'Feeder06/Error.html',{'flag' : p})
+
+        error = getattr(__builtins__ , 'FileNotFoundError', IOError)
+        #with open(path_to_file) as f:
+        try:
+            f=open(path_to_file)
             reader = csv.reader(f)
             for row in reader:
                 student=Student(name=row[0], roll=row[1], password=row[2],course=a)
                 student.save()
+        except error:
+            p=7
+            return render(request,'Feeder06/Error.html',{'flag' : p})
+
         if request.user.is_authenticated():
             course_list = Course.objects.all()
             context = {

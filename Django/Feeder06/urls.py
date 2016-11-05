@@ -19,17 +19,9 @@ urlpatterns = [
     url(r'^register/', views.register, name='register'),
     url(r'^cregister/', views.cregister, name='cregister'),
 	url(r'^logout/', views.Ilogout, name='logout'),
-    url(r'^slogin/', views.Studentlist, name='slogin'),
     url(r'^social/', views.social, name='social'),
+
 ]
 
-'''def get_admin_urls(urls):
-    def get_urls():
-        my_urls = [
-            (, admin.site.admin_view()),
-        ]
-        return my_urls + urls
-    return get_urls
 
-admin_urls = get_admin_urls(admin.site.get_urls())
-admin.site.get_urls = admin_urls'''
+

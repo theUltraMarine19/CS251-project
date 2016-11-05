@@ -1,0 +1,28 @@
+{% extends 'Feeder06/base.html' %}
+
+{% block body %}
+		<h1>Database Error !</h1>
+
+		{% if flag == 1 %}
+		<strong>Deadline already exists</strong><br>
+		<a href="/Feeder06/">Return to the homepage.</a><br />
+		{% elif flag == 2 %}
+        <strong>Course already exists</strong><br>
+		<a href="/Feeder06/">Return to the homepage.</a><br />
+        {% elif flag == 3 %}
+        <strong>Sorry, only admin is allowed !</strong><br>
+		<a href="/Feeder06/">Return to the homepage.</a><br />
+        {% elif flag == 4 %}
+        <strong>Your account has been disabled .</strong><br>
+		<a href="/Feeder06/">Return to the homepage.</a><br />
+        {% elif flag == 5 %}
+        <strong>Invalid Login details supplied !</strong><br>
+		<a href="/Feeder06/">Return to the homepage.</a><br />
+        {% elif flag == 6 %}
+        <strong>Course Does not exist.</strong><br>
+		<a href="/Feeder06/">Return to the homepage.</a><br />
+        {% elif flag == 7 %}
+        <strong>Invalid File Path</strong><br>
+		<a href="/Feeder06/adminlogin/">Return to the homepage.</a><br />
+		{% endif %}
+{% endblock %}

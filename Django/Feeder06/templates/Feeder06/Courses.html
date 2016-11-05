@@ -3,8 +3,7 @@
 {% block body %}
     {% for c in course_list %}
         {% if c.course_code == course_id %}
-            <h1>{{ course_id }}-{{ c.course_name }}</h1>
-            <a href="#"> Midsem Course Feedback </a>
+            <h1>{{ course_id }}-{{ c.instructor_name }}</h1>
         {% endif %}
     {% endfor %}
 {% endblock %}
